@@ -15,6 +15,7 @@ var PIN_HEIGHT = 40;
 var TIMES = ['12:00', '13:00', '14:00'];
 var typesOfFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var typesOfAds = ['palace', 'flat', 'house', 'bungalo'];
+var typesOfAdsRus = ['Дворец', 'Квартира', 'Дом', 'Бунгало'];
 var pathsOfPhotos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
 var map = document.querySelector('.map');
@@ -87,3 +88,67 @@ var renderPins = function () {
 createAdsDescriptions();
 renderPins();
 map.classList.remove('map--faded');
+
+//
+var adCardTemplate = document.querySelector('#card')
+    .content
+    .querySelector('.map__card');
+
+var filtersContatiner = document.querySelector('.map__filters-container');
+
+// Создание элементов списка удобств объявления
+var createOfferFeatures = function (featuresContainer, featuresArr) {
+  featuresContainer.innerHTML = '';
+
+  for (var i = 0; i < featuresArr.length; i++) {
+    featuresContainer.insertAdjacentHTML('beforeend', '<li class="popup__feature popup__feature--' + featuresArr[i] + '"></li>');
+  }
+
+  return featuresContainer;
+};
+
+// Создание изображений для объявления
+var createOfferPhotos = function (photosContainer, photosArr) {
+  photosContainer.innerHTML = '';
+
+  for (var i = 0; i < photosArr.length; i++) {
+    photosContainer.insertAdjacentHTML('beforeend', '<img src="' + photosArr[i] + '" class="popup__photo" width="45" height="40" alt="Фотография жилья">');
+  }
+
+  return photosContainer;
+};
+
+// Создание и заполнение карточки объявления
+var createCard = function (adNumber) {
+  var adCard = adCardTemplate.cloneNode(true);
+  var cardOfferTitle = adCard.querySelector('.popup__title');
+  var cardOfferAddres = adCard.querySelector('.popup__text--address');
+  var cardOfferPrice = adCard.querySelector('.popup__text--price');
+  var cardOfferType = adCard.querySelector('.popup__type');
+  var cardOfferCapacity = adCard.querySelector('.popup__text--capacity');
+  var cardOfferTime = adCard.querySelector('.popup__text--time');
+  var cardOfferFeatures = adCard.querySelector('.popup__features');
+  var cardOfferDescription = adCard.querySelector('.popup__description');
+  var cardOfferPhotos = adCard.querySelector('.popup__photos');
+  var cardAuthorAvatar = adCard.querySelector('.popup__avatar');
+
+  cardOfferTitle.textContent = '' + adsDescriptions[adNumber].offer.title;
+  cardOfferAddres.textContent = '' + adsDescriptions[adNumber].offer.address;
+  cardOfferPrice.textContent = adsDescriptions[adNumber].offer.price + '₽/ночь';
+  cardOfferType.textContent = typesOfAdsRus[typesOfAds.indexOf(adsDescriptions[adNumber].offer.type)];
+  cardOfferCapacity.textContent = adsDescriptions[adNumber].offer.rooms + ' комнаты для ' + adsDescriptions[adNumber].offer.guests + ' гостей';
+  cardOfferTime.textContent = 'Заезд после ' + adsDescriptions[adNumber].offer.checkin + ', выезд до ' + adsDescriptions[adNumber].offer.checkout;
+  createOfferFeatures(cardOfferFeatures, adsDescriptions[adNumber].offer.features);
+  cardOfferDescription.textContent = adsDescriptions[adNumber].offer.description;
+  createOfferPhotos(cardOfferPhotos, adsDescriptions[adNumber].offer.photos);
+  cardAuthorAvatar.setAttribute('src', '' + adsDescriptions[adNumber].author.avatar + '');
+
+  return adCard;
+};
+
+// Рендеринг карточки первого объявления из массива adsDescriptionsии
+var renderCard = function () {
+  map.insertBefore(createCard(0), filtersContatiner);
+};
+
+renderCard();
