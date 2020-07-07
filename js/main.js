@@ -4,18 +4,20 @@ var NUMBER_OF_ADS = 8;
 var MIN_PRICE = 1000;
 var MAX_PRICE = 10000;
 var MIN_ROOMS = 1;
-var MAX_ROOMS = 4;
+var MAX_ROOMS = 3;
 var MIN_GUESTS = 1;
-var MAX_GUESTS = 6;
+var MAX_GUESTS = 3;
 var X_MIN = 0;
 var Y_MIN = 130;
 var Y_MAX = 630;
 var PIN_WIDTH = 40;
 var PIN_HEIGHT = 40;
+var MAIN_PIN_WIDTH = 65;
+var MAIN_PIN_HEIGHT = 85;
 var TIMES = ['12:00', '13:00', '14:00'];
 var typesOfFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var typesOfAds = ['palace', 'flat', 'house', 'bungalo'];
-var typesOfAdsRus = ['Дворец', 'Квартира', 'Дом', 'Бунгало'];
+// var typesOfAdsRus = ['Дворец', 'Квартира', 'Дом', 'Бунгало'];
 var pathsOfPhotos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
 var map = document.querySelector('.map');
@@ -86,10 +88,10 @@ var renderPins = function () {
 };
 
 createAdsDescriptions();
-renderPins();
-map.classList.remove('map--faded');
 
-//
+/*
+// Создание о отрисовка карточки первого объвяления
+
 var adCardTemplate = document.querySelector('#card')
     .content
     .querySelector('.map__card');
@@ -138,3 +140,80 @@ var renderCard = function () {
 };
 
 renderCard();
+*/
+
+
+// Активация страницы, заполнение поля адреса, непростая валидация
+
+var mainPin = mapPinsContainer.querySelector('.map__pin--main');
+var form = document.querySelector('.ad-form');
+var formElements = form.querySelectorAll('.ad-form__element');
+var mapFilters = document.querySelectorAll('.map__filter');
+var offerFormAddress = form.querySelector('#address');
+var offerFormRoomNumber = form.querySelector('#room_number');
+var offerFormCapacity = form.querySelector('#capacity');
+
+var disableElements = function (elementsCollection) {
+  for (var i = 0; i < elementsCollection.length; i++) {
+    elementsCollection[i].setAttribute('disabled', 'disabled');
+  }
+};
+
+var enableElements = function (elementsCollection) {
+  for (var i = 0; i < elementsCollection.length; i++) {
+    elementsCollection[i].removeAttribute('disabled');
+  }
+};
+
+disableElements(formElements);
+disableElements(mapFilters);
+
+// Активация страницы
+var activatePage = function () {
+  map.classList.remove('map--faded');
+  form.classList.remove('ad-form--disabled');
+  enableElements(formElements);
+  enableElements(mapFilters);
+  renderPins();
+  addMainPinAddress(true);
+  mainPin.removeEventListener('mousedown', pageActivateHandler);
+  mainPin.removeEventListener('keydown', pageActivateHandler);
+};
+
+var pageActivateHandler = function (evt) {
+  if (evt.button === 0) {
+    activatePage();
+  } else if (evt.key === 'Enter') {
+    activatePage();
+  }
+};
+
+// Получение и заполнения поля адреса главной метки
+var addMainPinAddress = function (isPageActivate) {
+  var mainPinX = mainPin.offsetLeft + MAIN_PIN_WIDTH / 2;
+  var mainPinY = mainPin.offsetTop + MAIN_PIN_HEIGHT / 2;
+
+  if (isPageActivate === true) {
+    mainPinY = mainPin.offsetTop + MAIN_PIN_HEIGHT;
+  }
+
+  offerFormAddress.value = Math.round(mainPinX) + ', ' + Math.round(mainPinY);
+};
+
+// Валидация количетсва комнат и гостей
+var guestsValidationHandler = function () {
+  if (offerFormRoomNumber.value !== '100' && offerFormCapacity.value === '0') {
+    offerFormRoomNumber.setCustomValidity('Укажите количество комнат');
+  } else if (offerFormRoomNumber.value < offerFormCapacity.value) {
+    offerFormRoomNumber.setCustomValidity('Количество гостей не может превышать количество комнат');
+  } else if (offerFormRoomNumber.value === '100' && offerFormCapacity.value !== '0') {
+    offerFormRoomNumber.setCustomValidity('100 комнат - не для гостей');
+  } else {
+    offerFormRoomNumber.setCustomValidity('');
+  }
+};
+
+addMainPinAddress();
+mainPin.addEventListener('mousedown', pageActivateHandler);
+mainPin.addEventListener('keydown', pageActivateHandler);
+offerFormRoomNumber.addEventListener('change', guestsValidationHandler);
