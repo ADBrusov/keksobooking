@@ -176,14 +176,18 @@ var activatePage = function () {
   enableElements(mapFilters);
   renderPins();
   addMainPinAddress(true);
-  mainPin.removeEventListener('mousedown', pageActivateHandler);
-  mainPin.removeEventListener('keydown', pageActivateHandler);
+  mainPin.removeEventListener('mousedown', onMousePageActivate);
+  mainPin.removeEventListener('keydown', onKeyboardPageActivate);
 };
 
-var pageActivateHandler = function (evt) {
+var onMousePageActivate = function (evt) {
   if (evt.button === 0) {
     activatePage();
-  } else if (evt.key === 'Enter') {
+  }
+};
+
+var onKeyboardPageActivate = function (evt) {
+  if (evt.key === 'Enter') {
     activatePage();
   }
 };
@@ -198,22 +202,23 @@ var addMainPinAddress = function (isPageActivate) {
   }
 
   offerFormAddress.value = Math.round(mainPinX) + ', ' + Math.round(mainPinY);
+  offerFormAddress.readOnly = true;
 };
 
 // Валидация количетсва комнат и гостей
 var guestsValidationHandler = function () {
   if (offerFormRoomNumber.value !== '100' && offerFormCapacity.value === '0') {
-    offerFormRoomNumber.setCustomValidity('Укажите количество комнат');
+    offerFormCapacity.setCustomValidity('Укажите количество гостей');
   } else if (offerFormRoomNumber.value < offerFormCapacity.value) {
-    offerFormRoomNumber.setCustomValidity('Количество гостей не может превышать количество комнат');
+    offerFormCapacity.setCustomValidity('Количество гостей не может превышать количество комнат');
   } else if (offerFormRoomNumber.value === '100' && offerFormCapacity.value !== '0') {
-    offerFormRoomNumber.setCustomValidity('100 комнат - не для гостей');
+    offerFormCapacity.setCustomValidity('100 комнат - не для гостей');
   } else {
-    offerFormRoomNumber.setCustomValidity('');
+    offerFormCapacity.setCustomValidity('');
   }
 };
 
 addMainPinAddress();
-mainPin.addEventListener('mousedown', pageActivateHandler);
-mainPin.addEventListener('keydown', pageActivateHandler);
-offerFormRoomNumber.addEventListener('change', guestsValidationHandler);
+mainPin.addEventListener('mousedown', onMousePageActivate);
+mainPin.addEventListener('keydown', onKeyboardPageActivate);
+offerFormCapacity.addEventListener('change', guestsValidationHandler);
