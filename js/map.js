@@ -63,4 +63,10 @@
   addMainPinAddress();
   mainPin.addEventListener('mousedown', onMousePageActivate);
   mainPin.addEventListener('keydown', onKeyboardPageActivate);
+
+  window.map = {
+    MAIN_PIN_WIDTH: MAIN_PIN_WIDTH,
+    MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
+    addMainPinAddress: addMainPinAddress
+  };
 })();
