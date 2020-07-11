@@ -61,6 +61,10 @@
 
   window.data = {
     NUMBER_OF_ADS: NUMBER_OF_ADS,
+    X_MIN: X_MIN,
+    Y_MIN: Y_MIN,
+    Y_MAX: Y_MAX,
+    xMax: xMax,
     typesOfAds: typesOfAds,
     typesOfAdsRus: typesOfAdsRus,
     adsDescriptions: adsDescriptions
