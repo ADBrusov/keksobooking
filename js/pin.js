@@ -43,8 +43,8 @@
   };
 
   var deletePins = function () {
-    var mapPins = mapPinsContainer.querySelectorAll('.map__pin');
-    for (var i = mapPins.length - 1; i > 0; i--) {
+    var mapPins = mapPinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)');
+    for (var i = 0; i < mapPins.length; i++) {
       mapPinsContainer.lastChild.remove();
     }
   };
