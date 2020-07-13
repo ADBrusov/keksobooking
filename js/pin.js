@@ -42,7 +42,15 @@
     mapPinsContainer.appendChild(fragment);
   };
 
+  var deletePins = function () {
+    var mapPins = mapPinsContainer.querySelectorAll('.map__pin');
+    for (var i = mapPins.length - 1; i > 0; i--) {
+      mapPinsContainer.lastChild.remove();
+    }
+  };
+
   window.pin = {
-    renderPins: renderPins
+    renderPins: renderPins,
+    deletePins: deletePins
   };
 })();

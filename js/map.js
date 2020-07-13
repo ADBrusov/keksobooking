@@ -23,6 +23,15 @@
     }
   };
 
+  var deactivePage = function () {
+    disableElements(formElements);
+    disableElements(mapFilters);
+    map.classList.add('map--faded');
+    form.classList.add('ad-form--disabled');
+    window.pin.deletePins();
+    window.card.closeCard();
+  };
+
   var addMainPinAddress = function (isPageActivate) {
     var mainPinX = mainPin.offsetLeft + MAIN_PIN_WIDTH / 2;
     var mainPinY = mainPin.offsetTop + MAIN_PIN_HEIGHT / 2;
@@ -73,8 +82,7 @@
     }
   };
 
-  disableElements(formElements);
-  disableElements(mapFilters);
+  deactivePage();
   addMainPinAddress();
   mainPin.addEventListener('mousedown', onMousePageActivate);
   mainPin.addEventListener('keydown', onKeyboardPageActivate);
@@ -82,6 +90,11 @@
   window.map = {
     MAIN_PIN_WIDTH: MAIN_PIN_WIDTH,
     MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
-    addMainPinAddress: addMainPinAddress
+    map: map,
+    mainPin: mainPin,
+    addMainPinAddress: addMainPinAddress,
+    deactivePage: deactivePage,
+    onMousePageActivate: onMousePageActivate,
+    onKeyboardPageActivate: onKeyboardPageActivate
   };
 })();
