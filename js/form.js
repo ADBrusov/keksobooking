@@ -15,8 +15,9 @@
   var offerFormType = form.querySelector('#type');
   var offerFormTimeIn = form.querySelector('#timein');
   var offerFormTimeOut = form.querySelector('#timeout');
+  var resetFormButton = form.querySelector('.ad-form__reset');
 
-  var guestsValidationHandler = function () {
+  var onGuestsChange = function () {
     if (offerFormRoomNumber.value !== '100' && offerFormCapacity.value === '0') {
       offerFormCapacity.setCustomValidity('Укажите количество гостей');
     } else if (offerFormRoomNumber.value === '100' && offerFormCapacity.value !== '0') {
@@ -28,7 +29,7 @@
     }
   };
 
-  var minPriceValidationHandler = function () {
+  var onOfferTypeChange = function () {
     offerFormPrice.min = offerTypesMinPrices[offerFormType.value];
     offerFormPrice.placeholder = offerTypesMinPrices[offerFormType.value];
   };
@@ -41,9 +42,66 @@
     offerFormTimeIn.value = offerFormTimeOut.value;
   };
 
-  offerFormCapacity.addEventListener('change', guestsValidationHandler);
-  offerFormRoomNumber.addEventListener('change', guestsValidationHandler);
-  offerFormType.addEventListener('change', minPriceValidationHandler);
+  var onFormSubmit = function (evt) {
+    evt.preventDefault();
+    window.backend.isDataUpload(new FormData(form), onFormSubmitSuccess, onFormSubmitError);
+  };
+
+  var onFormSubmitSuccess = function () {
+    window.map.deactivePage();
+    form.reset();
+    window.map.addMainPinAddress();
+    window.map.mainPin.addEventListener('mousedown', window.map.onMousePageActivate);
+    window.map.mainPin.addEventListener('keydown', window.map.onKeyboardPageActivate);
+    renderMessage('error');
+  };
+
+  var onFormSubmitError = function () {
+    renderMessage('error');
+  };
+
+  var renderMessage = function (messageType) {
+    var messageTemplate = document.querySelector('#' + messageType)
+      .content
+      .querySelector('.' + messageType);
+    var message = messageTemplate.cloneNode(true);
+
+    document.querySelector('body').appendChild(message);
+
+    var onClickMessageClose = function () {
+      document.querySelector('body').removeChild(message);
+      document.removeEventListener('click', onClickMessageClose);
+      document.removeEventListener('keydown', onKeyboardMessageClose);
+    };
+
+    var onKeyboardMessageClose = function (evt) {
+      if (evt.key === 'Escape') {
+        document.querySelector('body').removeChild(message);
+        document.removeEventListener('click', onClickMessageClose);
+        document.removeEventListener('keydown', onKeyboardMessageClose);
+      }
+    };
+
+    var onErrorButtonClick = function () {
+      document.querySelector('body').removeChild(message);
+      document.removeEventListener('click', onClickMessageClose);
+      document.removeEventListener('keydown', onKeyboardMessageClose);
+    };
+
+    message.querySelector('.error__button').addEventListener('click', onErrorButtonClick);
+    document.addEventListener('click', onClickMessageClose);
+    document.addEventListener('keydown', onKeyboardMessageClose);
+  };
+
+  var onFormReset = function () {
+    form.reset();
+  };
+
+  offerFormCapacity.addEventListener('change', onGuestsChange);
+  offerFormRoomNumber.addEventListener('change', onGuestsChange);
+  offerFormType.addEventListener('change', onOfferTypeChange);
   offerFormTimeIn.addEventListener('change', onOfferTimeInChange);
   offerFormTimeOut.addEventListener('change', onOfferTimeOutChange);
+  form.addEventListener('submit', onFormSubmit);
+  resetFormButton.addEventListener('click', onFormReset);
 })();

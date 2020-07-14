@@ -47,27 +47,31 @@
     return adCard;
   };
 
-  var renderCard = function (ad) {
+  var closeCard = function () {
     var adCard = document.querySelector('.map__card');
 
     if (adCard) {
       adCard.remove();
+      document.removeEventListener('keydown', onKeyboardCloseCard);
     }
+  };
+
+  var renderCard = function (ad) {
+    closeCard();
 
     map.insertBefore(createCard(ad), filtersContatiner);
   };
 
   var onKeyboardCloseCard = function (evt) {
-    var adCard = document.querySelector('.map__card');
-
     if (evt.key === 'Escape') {
-      adCard.remove();
+      closeCard();
     }
 
     document.removeEventListener('keydown', onKeyboardCloseCard);
   };
 
   window.card = {
+    closeCard: closeCard,
     renderCard: renderCard
   };
 })();
