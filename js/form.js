@@ -53,7 +53,7 @@
     window.map.addMainPinAddress();
     window.map.mainPin.addEventListener('mousedown', window.map.onMousePageActivate);
     window.map.mainPin.addEventListener('keydown', window.map.onKeyboardPageActivate);
-    renderMessage('success');
+    renderMessage('error');
   };
 
   var onFormSubmitError = function () {
@@ -82,16 +82,13 @@
       }
     };
 
-    if (message.querySelector('.error__button')) {
-      var onErrorButtonClick = function () {
-        document.querySelector('body').removeChild(message);
-        document.removeEventListener('click', onClickMessageClose);
-        document.removeEventListener('keydown', onKeyboardMessageClose);
-      };
+    var onErrorButtonClick = function () {
+      document.querySelector('body').removeChild(message);
+      document.removeEventListener('click', onClickMessageClose);
+      document.removeEventListener('keydown', onKeyboardMessageClose);
+    };
 
-      message.querySelector('.error__button').addEventListener('click', onErrorButtonClick);
-    }
-
+    message.querySelector('.error__button').addEventListener('click', onErrorButtonClick);
     document.addEventListener('click', onClickMessageClose);
     document.addEventListener('keydown', onKeyboardMessageClose);
   };
