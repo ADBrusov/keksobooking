@@ -45,6 +45,8 @@
   };
 
   var onPinsLoadSuccess = function (wizards) {
+    enableElements(mapFilters);
+    window.filter.filterPins(wizards);
     window.pin.renderPins(wizards);
   };
 
@@ -63,7 +65,6 @@
     map.classList.remove('map--faded');
     form.classList.remove('ad-form--disabled');
     enableElements(formElements);
-    enableElements(mapFilters);
     window.backend.isDataLoad(onPinsLoadSuccess, onPinsLoadError);
     addMainPinAddress(true);
     mainPin.removeEventListener('mousedown', onMousePageActivate);

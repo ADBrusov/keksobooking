@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+  var typesOfAds = ['palace', 'flat', 'house', 'bungalo'];
+  var typesOfAdsRus = ['Дворец', 'Квартира', 'Дом', 'Бунгало'];
+
   var adCardTemplate = document.querySelector('#card')
     .content
     .querySelector('.map__card');
@@ -29,7 +32,7 @@
     adCard.querySelector('.popup__title').textContent = '' + ad.offer.title;
     adCard.querySelector('.popup__text--address').textContent = '' + ad.offer.address;
     adCard.querySelector('.popup__text--price').textContent = ad.offer.price + '₽/ночь';
-    adCard.querySelector('.popup__type').textContent = window.data.typesOfAdsRus[window.data.typesOfAds.indexOf(ad.offer.type)];
+    adCard.querySelector('.popup__type').textContent = typesOfAdsRus[typesOfAds.indexOf(ad.offer.type)];
     adCard.querySelector('.popup__text--capacity').textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей';
     adCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
     createOfferFeatures(adCard.querySelector('.popup__features'), ad.offer.features);

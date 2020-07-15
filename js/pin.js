@@ -3,6 +3,7 @@
 (function () {
   var PIN_WIDTH = 40;
   var PIN_HEIGHT = 40;
+  var MAX_PINS = 5;
 
   var mapPinTemplate = document.querySelector('#pin')
     .content
@@ -33,9 +34,18 @@
   };
 
   var renderPins = function (wizards) {
-    var fragment = document.createDocumentFragment();
+    deletePins();
 
-    for (var i = 0; i < wizards.length; i++) {
+    var fragment = document.createDocumentFragment();
+    var maxPins = 0;
+
+    if (wizards.length <= MAX_PINS) {
+      maxPins = wizards.length;
+    } else {
+      maxPins = 5;
+    }
+
+    for (var i = 0; i < maxPins; i++) {
       fragment.appendChild(createPin(wizards[i]));
     }
 
