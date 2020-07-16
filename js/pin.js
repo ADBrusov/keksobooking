@@ -36,6 +36,7 @@
     var fragment = document.createDocumentFragment();
 
     deletePins();
+    window.card.closeCard();
 
     ads.forEach(function (ad) {
       fragment.appendChild(createPin(ad));
