@@ -12,15 +12,15 @@
   var offerFormAddress = form.querySelector('#address');
 
   var disableElements = function (elementsCollection) {
-    for (var i = 0; i < elementsCollection.length; i++) {
-      elementsCollection[i].setAttribute('disabled', 'disabled');
-    }
+    elementsCollection.forEach(function (el) {
+      el.setAttribute('disabled', 'disabled');
+    });
   };
 
   var enableElements = function (elementsCollection) {
-    for (var i = 0; i < elementsCollection.length; i++) {
-      elementsCollection[i].removeAttribute('disabled');
-    }
+    elementsCollection.forEach(function (el) {
+      el.removeAttribute('disabled');
+    });
   };
 
   var deactivePage = function () {
@@ -44,8 +44,10 @@
     offerFormAddress.readOnly = true;
   };
 
-  var onPinsLoadSuccess = function (wizards) {
-    window.pin.renderPins(wizards);
+  var onPinsLoadSuccess = function (data) {
+    window.ads = data;
+    enableElements(mapFilters);
+    window.pin.renderPins(window.filter.filterPins(data));
   };
 
   var onPinsLoadError = function (errorMessage) {
@@ -63,7 +65,6 @@
     map.classList.remove('map--faded');
     form.classList.remove('ad-form--disabled');
     enableElements(formElements);
-    enableElements(mapFilters);
     window.backend.isDataLoad(onPinsLoadSuccess, onPinsLoadError);
     addMainPinAddress(true);
     mainPin.removeEventListener('mousedown', onMousePageActivate);
@@ -95,6 +96,7 @@
     addMainPinAddress: addMainPinAddress,
     deactivePage: deactivePage,
     onMousePageActivate: onMousePageActivate,
-    onKeyboardPageActivate: onKeyboardPageActivate
+    onKeyboardPageActivate: onKeyboardPageActivate,
+    onPinsLoadSuccess: onPinsLoadSuccess
   };
 })();

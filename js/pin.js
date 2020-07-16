@@ -32,21 +32,25 @@
     return mapPin;
   };
 
-  var renderPins = function (wizards) {
+  var renderPins = function (ads) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < wizards.length; i++) {
-      fragment.appendChild(createPin(wizards[i]));
-    }
+    deletePins();
+    window.card.closeCard();
+
+    ads.forEach(function (ad) {
+      fragment.appendChild(createPin(ad));
+    });
 
     mapPinsContainer.appendChild(fragment);
   };
 
   var deletePins = function () {
     var mapPins = mapPinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)');
-    for (var i = 0; i < mapPins.length; i++) {
+
+    mapPins.forEach(function () {
       mapPinsContainer.lastChild.remove();
-    }
+    });
   };
 
   window.pin = {

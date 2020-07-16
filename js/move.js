@@ -1,6 +1,11 @@
 'use strict';
 
 (function () {
+  var X_MIN = 0;
+  var Y_MIN = 130;
+  var Y_MAX = 630;
+
+  var xMax = document.querySelector('.map__pins').clientWidth;
   var mainPin = document.querySelector('.map__pin--main');
 
   mainPin.addEventListener('mousedown', function (evt) {
@@ -27,11 +32,11 @@
       var mainPinX = mainPin.offsetLeft - shift.x + window.map.MAIN_PIN_WIDTH / 2;
       var mainPinY = mainPin.offsetTop - shift.y + window.map.MAIN_PIN_HEIGHT;
 
-      if (mainPinY >= window.data.Y_MIN && mainPinY <= window.data.Y_MAX) {
+      if (mainPinY >= Y_MIN && mainPinY <= Y_MAX) {
         mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
       }
 
-      if (mainPinX >= window.data.X_MIN && mainPinX <= window.data.xMax) {
+      if (mainPinX >= X_MIN && mainPinX <= xMax) {
         mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
       }
 

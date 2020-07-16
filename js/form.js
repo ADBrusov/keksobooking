@@ -68,24 +68,24 @@
 
     document.querySelector('body').appendChild(message);
 
-    var onClickMessageClose = function () {
+    var messageClose = function () {
       document.querySelector('body').removeChild(message);
       document.removeEventListener('click', onClickMessageClose);
       document.removeEventListener('keydown', onKeyboardMessageClose);
+    };
+
+    var onClickMessageClose = function () {
+      messageClose();
     };
 
     var onKeyboardMessageClose = function (evt) {
       if (evt.key === 'Escape') {
-        document.querySelector('body').removeChild(message);
-        document.removeEventListener('click', onClickMessageClose);
-        document.removeEventListener('keydown', onKeyboardMessageClose);
+        messageClose();
       }
     };
 
     var onErrorButtonClick = function () {
-      document.querySelector('body').removeChild(message);
-      document.removeEventListener('click', onClickMessageClose);
-      document.removeEventListener('keydown', onKeyboardMessageClose);
+      messageClose();
     };
 
     message.querySelector('.error__button').addEventListener('click', onErrorButtonClick);
