@@ -3,7 +3,6 @@
 (function () {
   var PIN_WIDTH = 40;
   var PIN_HEIGHT = 40;
-  var MAX_PINS = 5;
 
   var mapPinTemplate = document.querySelector('#pin')
     .content
@@ -33,30 +32,24 @@
     return mapPin;
   };
 
-  var renderPins = function (wizards) {
+  var renderPins = function (ads) {
+    var fragment = document.createDocumentFragment();
+
     deletePins();
 
-    var fragment = document.createDocumentFragment();
-    var maxPins = 0;
-
-    if (wizards.length <= MAX_PINS) {
-      maxPins = wizards.length;
-    } else {
-      maxPins = 5;
-    }
-
-    for (var i = 0; i < maxPins; i++) {
-      fragment.appendChild(createPin(wizards[i]));
-    }
+    ads.forEach(function (ad) {
+      fragment.appendChild(createPin(ad));
+    });
 
     mapPinsContainer.appendChild(fragment);
   };
 
   var deletePins = function () {
     var mapPins = mapPinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)');
-    for (var i = 0; i < mapPins.length; i++) {
+
+    mapPins.forEach(function () {
       mapPinsContainer.lastChild.remove();
-    }
+    });
   };
 
   window.pin = {

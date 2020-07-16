@@ -12,15 +12,15 @@
   var offerFormAddress = form.querySelector('#address');
 
   var disableElements = function (elementsCollection) {
-    for (var i = 0; i < elementsCollection.length; i++) {
-      elementsCollection[i].setAttribute('disabled', 'disabled');
-    }
+    elementsCollection.forEach(function (el) {
+      el.setAttribute('disabled', 'disabled');
+    });
   };
 
   var enableElements = function (elementsCollection) {
-    for (var i = 0; i < elementsCollection.length; i++) {
-      elementsCollection[i].removeAttribute('disabled');
-    }
+    elementsCollection.forEach(function (el) {
+      el.removeAttribute('disabled');
+    });
   };
 
   var deactivePage = function () {
@@ -44,10 +44,10 @@
     offerFormAddress.readOnly = true;
   };
 
-  var onPinsLoadSuccess = function (wizards) {
+  var onPinsLoadSuccess = function (data) {
+    window.ads = data;
     enableElements(mapFilters);
-    window.filter.filterPins(wizards);
-    window.pin.renderPins(wizards);
+    window.pin.renderPins(window.filter.filterPins(data));
   };
 
   var onPinsLoadError = function (errorMessage) {
@@ -96,6 +96,7 @@
     addMainPinAddress: addMainPinAddress,
     deactivePage: deactivePage,
     onMousePageActivate: onMousePageActivate,
-    onKeyboardPageActivate: onKeyboardPageActivate
+    onKeyboardPageActivate: onKeyboardPageActivate,
+    onPinsLoadSuccess: onPinsLoadSuccess
   };
 })();

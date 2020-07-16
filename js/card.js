@@ -1,8 +1,12 @@
 'use strict';
 
 (function () {
-  var typesOfAds = ['palace', 'flat', 'house', 'bungalo'];
-  var typesOfAdsRus = ['Дворец', 'Квартира', 'Дом', 'Бунгало'];
+  var typesOfAds = {
+    palace: 'Дворец',
+    flat: 'Квартира',
+    house: 'Дом',
+    bungalo: 'Бунгало'
+  };
 
   var adCardTemplate = document.querySelector('#card')
     .content
@@ -13,17 +17,17 @@
   var createOfferFeatures = function (featuresContainer, featuresArr) {
     featuresContainer.innerHTML = '';
 
-    for (var i = 0; i < featuresArr.length; i++) {
-      featuresContainer.insertAdjacentHTML('beforeend', '<li class="popup__feature popup__feature--' + featuresArr[i] + '"></li>');
-    }
+    featuresArr.forEach(function (it) {
+      featuresContainer.insertAdjacentHTML('beforeend', '<li class="popup__feature popup__feature--' + it + '"></li>');
+    });
   };
 
   var createOfferPhotos = function (photosContainer, photosArr) {
     photosContainer.innerHTML = '';
 
-    for (var i = 0; i < photosArr.length; i++) {
-      photosContainer.insertAdjacentHTML('beforeend', '<img src="' + photosArr[i] + '" class="popup__photo" width="45" height="40" alt="Фотография жилья">');
-    }
+    photosArr.forEach(function (it) {
+      photosContainer.insertAdjacentHTML('beforeend', '<img src="' + it + '" class="popup__photo" width="45" height="40" alt="Фотография жилья">');
+    });
   };
 
   var createCard = function (ad) {
@@ -32,7 +36,7 @@
     adCard.querySelector('.popup__title').textContent = '' + ad.offer.title;
     adCard.querySelector('.popup__text--address').textContent = '' + ad.offer.address;
     adCard.querySelector('.popup__text--price').textContent = ad.offer.price + '₽/ночь';
-    adCard.querySelector('.popup__type').textContent = typesOfAdsRus[typesOfAds.indexOf(ad.offer.type)];
+    adCard.querySelector('.popup__type').textContent = typesOfAds[ad.offer.type];
     adCard.querySelector('.popup__text--capacity').textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей';
     adCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
     createOfferFeatures(adCard.querySelector('.popup__features'), ad.offer.features);
