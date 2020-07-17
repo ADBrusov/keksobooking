@@ -53,7 +53,7 @@
     window.map.addMainPinAddress();
     window.map.mainPin.addEventListener('mousedown', window.map.onMousePageActivate);
     window.map.mainPin.addEventListener('keydown', window.map.onKeyboardPageActivate);
-    renderMessage('error');
+    renderMessage('success');
   };
 
   var onFormSubmitError = function () {
@@ -88,7 +88,9 @@
       messageClose();
     };
 
-    message.querySelector('.error__button').addEventListener('click', onErrorButtonClick);
+    if (messageType === 'error') {
+      message.querySelector('.error__button').addEventListener('click', onErrorButtonClick);
+    }
     document.addEventListener('click', onClickMessageClose);
     document.addEventListener('keydown', onKeyboardMessageClose);
   };
