@@ -50,9 +50,6 @@
   var onFormSubmitSuccess = function () {
     window.map.deactivePage();
     form.reset();
-    window.map.addMainPinAddress();
-    window.map.mainPin.addEventListener('mousedown', window.map.onMousePageActivate);
-    window.map.mainPin.addEventListener('keydown', window.map.onKeyboardPageActivate);
     renderMessage('success');
   };
 
@@ -97,6 +94,8 @@
 
   var onFormReset = function () {
     form.reset();
+    window.map.deactivePage();
+    window.images.reset();
   };
 
   offerFormCapacity.addEventListener('change', onGuestsChange);

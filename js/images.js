@@ -35,6 +35,15 @@
     uploadImg(photoFileChooser, photoPreview);
   };
 
+  var resetFormImages = function () {
+    avatarPreview.removeAttribute('src');
+    photoPreview.removeAttribute('src');
+  };
+
   avatarFileChooser.addEventListener('change', onAvatarChange);
   photoFileChooser.addEventListener('change', onPhotoChange);
+
+  window.images = {
+    reset: resetFormImages
+  };
 })();
