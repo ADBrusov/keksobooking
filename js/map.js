@@ -8,7 +8,7 @@
   var mainPin = map.querySelector('.map__pin--main');
   var mapFilters = map.querySelectorAll('.map__filter');
   var form = document.querySelector('.ad-form');
-  var formElements = form.querySelectorAll('.ad-form__element');
+  var formFieldsets = form.querySelectorAll('.ad-form__element');
   var offerFormAddress = form.querySelector('#address');
 
   var disableElements = function (elementsCollection) {
@@ -24,12 +24,16 @@
   };
 
   var deactivePage = function () {
-    disableElements(formElements);
+    disableElements(formFieldsets);
     disableElements(mapFilters);
     map.classList.add('map--faded');
     form.classList.add('ad-form--disabled');
-    window.pin.deletePins();
-    window.card.closeCard();
+    window.pins.delete();
+    window.card.close();
+    window.pins.deactiveMain();
+    mainPin.addEventListener('mousedown', onMousePageActivate);
+    mainPin.addEventListener('keydown', onKeyboardPageActivate);
+    addMainPinAddress();
   };
 
   var addMainPinAddress = function (isPageActivate) {
@@ -47,7 +51,7 @@
   var onPinsLoadSuccess = function (data) {
     window.ads = data;
     enableElements(mapFilters);
-    window.pin.renderPins(window.filter.filterPins(data));
+    window.pins.render(window.filter.useOnPins(data));
   };
 
   var onPinsLoadError = function (errorMessage) {
@@ -64,7 +68,7 @@
   var activatePage = function () {
     map.classList.remove('map--faded');
     form.classList.remove('ad-form--disabled');
-    enableElements(formElements);
+    enableElements(formFieldsets);
     window.backend.isDataLoad(onPinsLoadSuccess, onPinsLoadError);
     addMainPinAddress(true);
     mainPin.removeEventListener('mousedown', onMousePageActivate);
@@ -84,19 +88,11 @@
   };
 
   deactivePage();
-  addMainPinAddress();
-  mainPin.addEventListener('mousedown', onMousePageActivate);
-  mainPin.addEventListener('keydown', onKeyboardPageActivate);
 
   window.map = {
     MAIN_PIN_WIDTH: MAIN_PIN_WIDTH,
     MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
-    map: map,
-    mainPin: mainPin,
     addMainPinAddress: addMainPinAddress,
-    deactivePage: deactivePage,
-    onMousePageActivate: onMousePageActivate,
-    onKeyboardPageActivate: onKeyboardPageActivate,
-    onPinsLoadSuccess: onPinsLoadSuccess
+    deactivePage: deactivePage
   };
 })();

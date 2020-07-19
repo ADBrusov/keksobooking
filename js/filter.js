@@ -56,14 +56,14 @@
     }).slice(MIN_PINS, MAX_PINS);
   };
 
-  var onFormFilterChange = function () {
-    window.debounce(window.pin.renderPins(filterPins(window.ads)));
-  };
+  var onFormFilterChange = window.debounce.remove(function () {
+    window.pins.render(filterPins(window.ads));
+  });
 
   formFilter.addEventListener('change', onFormFilterChange);
 
 
   window.filter = {
-    filterPins: filterPins
+    useOnPins: filterPins
   };
 })();

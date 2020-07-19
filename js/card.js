@@ -78,7 +78,7 @@
   };
 
   window.card = {
-    closeCard: closeCard,
-    renderCard: renderCard
+    close: closeCard,
+    render: renderCard
   };
 })();
