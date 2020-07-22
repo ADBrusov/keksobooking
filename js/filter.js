@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var MIN_PINS = 0;
   var MAX_PINS = 5;
 
   var PriceType = {
@@ -18,46 +17,52 @@
   var selectOfferRooms = formFilter.querySelector('#housing-rooms');
   var selectOfferGuests = formFilter.querySelector('#housing-guests');
 
-  var getFilterByType = function (el) {
-    return (el.offer.type === selectOfferType.value) || (selectOfferType.value === 'any');
+  var getFilterByType = function (advertisement) {
+    return (advertisement.offer.type === selectOfferType.value) || (selectOfferType.value === 'any');
   };
 
-  var getFilterByPrice = function (el) {
+  var getFilterByPrice = function (advertisement) {
     switch (selectOfferPrice.value) {
-      case PriceType.LOW: return el.offer.price <= PriceType.MIN;
-      case PriceType.MIDDLE: return el.offer.price >= PriceType.MIN && el.offer.price <= PriceType.MAX;
-      case PriceType.HIGH: return el.offer.price >= PriceType.MAX;
+      case PriceType.LOW: return advertisement.offer.price <= PriceType.MIN;
+      case PriceType.MIDDLE: return advertisement.offer.price >= PriceType.MIN && advertisement.offer.price <= PriceType.MAX;
+      case PriceType.HIGH: return advertisement.offer.price >= PriceType.MAX;
       default: return true;
     }
   };
 
-  var getFilterByRooms = function (el) {
-    return (el.offer.rooms === Number(selectOfferRooms.value)) || (selectOfferRooms.value === 'any');
+  var getFilterByRooms = function (advertisement) {
+    return (advertisement.offer.rooms === Number(selectOfferRooms.value)) || (selectOfferRooms.value === 'any');
   };
 
-  var getFilterByGuests = function (el) {
-    return (el.offer.guests === Number(selectOfferGuests.value)) || (selectOfferGuests.value === 'any');
+  var getFilterByGuests = function (advertisement) {
+    return (advertisement.offer.guests === Number(selectOfferGuests.value)) || (selectOfferGuests.value === 'any');
   };
 
-  var getFilterByFeatures = function (el) {
+  var getFilterByFeatures = function (advertisement) {
     var checkedFeatures = Array.from(formFilter.querySelectorAll('input:checked'));
     return checkedFeatures.every(function (feature) {
-      return el.offer.features.includes(feature.value);
+      return advertisement.offer.features.includes(feature.value);
     });
   };
 
   var filterPins = function (data) {
-    return data.filter(function (el) {
-      return getFilterByType(el) &&
-            getFilterByPrice(el) &&
-            getFilterByRooms(el) &&
-            getFilterByGuests(el) &&
-            getFilterByFeatures(el);
-    }).slice(MIN_PINS, MAX_PINS);
+    var filteredPins = [];
+
+    for (var i = 0; i < data.length && filteredPins.length < MAX_PINS; i++) {
+      if (getFilterByType(data[i]) &&
+      getFilterByPrice(data[i]) &&
+      getFilterByRooms(data[i]) &&
+      getFilterByGuests(data[i]) &&
+      getFilterByFeatures(data[i])) {
+        filteredPins.push(data[i]);
+      }
+    }
+
+    return filteredPins;
   };
 
   var onFormFilterChange = window.debounce.remove(function () {
-    window.pins.render(filterPins(window.ads));
+    window.pins.render(filterPins(window.advertisements));
   });
 
   formFilter.addEventListener('change', onFormFilterChange);

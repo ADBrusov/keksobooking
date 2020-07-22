@@ -8,18 +8,18 @@
   var mainPin = map.querySelector('.map__pin--main');
   var mapFilters = map.querySelectorAll('.map__filter');
   var form = document.querySelector('.ad-form');
-  var formFieldsets = form.querySelectorAll('.ad-form__element');
+  var formFieldsets = form.querySelectorAll('fieldset');
   var offerFormAddress = form.querySelector('#address');
 
   var disableElements = function (elementsCollection) {
-    elementsCollection.forEach(function (el) {
-      el.setAttribute('disabled', 'disabled');
+    elementsCollection.forEach(function (element) {
+      element.setAttribute('disabled', 'disabled');
     });
   };
 
   var enableElements = function (elementsCollection) {
-    elementsCollection.forEach(function (el) {
-      el.removeAttribute('disabled');
+    elementsCollection.forEach(function (element) {
+      element.removeAttribute('disabled');
     });
   };
 
@@ -49,7 +49,7 @@
   };
 
   var onPinsLoadSuccess = function (data) {
-    window.ads = data;
+    window.advertisements = data;
     enableElements(mapFilters);
     window.pins.render(window.filter.useOnPins(data));
   };

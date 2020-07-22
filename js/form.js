@@ -49,6 +49,7 @@
 
   var onFormSubmitSuccess = function () {
     window.map.deactivePage();
+    window.images.reset();
     form.reset();
     renderMessage('success');
   };

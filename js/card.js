@@ -30,19 +30,19 @@
     });
   };
 
-  var createCard = function (ad) {
+  var createCard = function (advertisement) {
     var adCard = adCardTemplate.cloneNode(true);
 
-    adCard.querySelector('.popup__title').textContent = '' + ad.offer.title;
-    adCard.querySelector('.popup__text--address').textContent = '' + ad.offer.address;
-    adCard.querySelector('.popup__text--price').textContent = ad.offer.price + '₽/ночь';
-    adCard.querySelector('.popup__type').textContent = typesOfAds[ad.offer.type];
-    adCard.querySelector('.popup__text--capacity').textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей';
-    adCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
-    createOfferFeatures(adCard.querySelector('.popup__features'), ad.offer.features);
-    adCard.querySelector('.popup__description').textContent = ad.offer.description;
-    createOfferPhotos(adCard.querySelector('.popup__photos'), ad.offer.photos);
-    adCard.querySelector('.popup__avatar').setAttribute('src', '' + ad.author.avatar + '');
+    adCard.querySelector('.popup__title').textContent = '' + advertisement.offer.title;
+    adCard.querySelector('.popup__text--address').textContent = '' + advertisement.offer.address;
+    adCard.querySelector('.popup__text--price').textContent = advertisement.offer.price + '₽/ночь';
+    adCard.querySelector('.popup__type').textContent = typesOfAds[advertisement.offer.type];
+    adCard.querySelector('.popup__text--capacity').textContent = advertisement.offer.rooms + ' комнаты для ' + advertisement.offer.guests + ' гостей';
+    adCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + advertisement.offer.checkin + ', выезд до ' + advertisement.offer.checkout;
+    createOfferFeatures(adCard.querySelector('.popup__features'), advertisement.offer.features);
+    adCard.querySelector('.popup__description').textContent = advertisement.offer.description;
+    createOfferPhotos(adCard.querySelector('.popup__photos'), advertisement.offer.photos);
+    adCard.querySelector('.popup__avatar').setAttribute('src', '' + advertisement.author.avatar + '');
 
     adCard.querySelector('.popup__close').addEventListener('click', function () {
       adCard.remove();
@@ -63,10 +63,10 @@
     }
   };
 
-  var renderCard = function (ad) {
+  var renderCard = function (advertisement) {
     closeCard();
 
-    map.insertBefore(createCard(ad), filtersContatiner);
+    map.insertBefore(createCard(advertisement), filtersContatiner);
   };
 
   var onKeyboardCloseCard = function (evt) {

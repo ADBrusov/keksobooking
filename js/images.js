@@ -32,12 +32,14 @@
   };
 
   var onPhotoChange = function () {
+    photoPreview.removeAttribute('hidden');
     uploadImg(photoFileChooser, photoPreview);
   };
 
   var resetFormImages = function () {
-    avatarPreview.removeAttribute('src');
+    avatarPreview.setAttribute('src', 'img/muffin-grey.svg');
     photoPreview.removeAttribute('src');
+    photoPreview.setAttribute('hidden', 'hidden');
   };
 
   avatarFileChooser.addEventListener('change', onAvatarChange);
